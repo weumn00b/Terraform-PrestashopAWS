@@ -9,17 +9,20 @@ variable "s3_bucket_name" { default = "prestashop-media" }
 variable "ami_id" { default = "ami-077b630ef539aa0b5"}
 variable "public_ip" { default = "0.0.0.0" }
 
-#VPC
+//This is the main VPC that will be tied to RDS and EC2
+
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 }
 
-#Internet Gateway
+//Allows traffic out to the internet
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 }
 
-# Public Subnet
+//Creating the Public Subnet for the E-Comm server
+
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
@@ -27,7 +30,8 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 }
 
-# Route Table
+//Creation of a routing table, this sends any IPv4 traffic out to the internet. Any traffic that is sent through to the Private VPC is routed by AWS internally
+
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main.id
 
@@ -37,13 +41,15 @@ resource "aws_route_table" "public_rt" {
   }
 }
 
-# Associate route table with subnet
+//Assigns the routing table to the public subnet only
+
 resource "aws_route_table_association" "public_assoc" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id
 }
 
-# Private Subnet (no IGW route)
+//Creation of the Private subnet (where RDS will sit)
+
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.2.0/24"
@@ -51,13 +57,16 @@ resource "aws_subnet" "private_subnet" {
   map_public_ip_on_launch = false
 }
 
-# Private Subnet 2
+//There needs to be 2 private subnets for a subnet group to work in AWS
+
 resource "aws_subnet" "private2_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "us-east-2a"
   map_public_ip_on_launch = false
 }
+
+//RDS needs to be in a subnet group for higher availability, balancing workloads, and to actually control the networking portion.
 
 resource "aws_db_subnet_group" "rds_subnets" {
   name       = "rds-subnet-group"
@@ -72,7 +81,8 @@ resource "aws_s3_bucket" "media_bucket" {
   bucket = var.s3_bucket_name
 }
 
-//Creates security groups
+//Creating EC2 secuity group that allows HTTP, HTTPS from anywhere and SSH from a specific public ip (yours)
+
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Allow HTTP, HTTPS, SSH"
@@ -104,6 +114,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
+//This allows traffic connecting to MySQL only if the instance has the security group for EC2
+
 resource "aws_security_group" "rds_sg" {
   name        = "rds_sg"
   description = "Allow MySQL from EC2 only"
@@ -123,10 +135,10 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  depends_on = [aws_security_group.ec2_sg] //ensures EC2 SG exists first
+  depends_on = [aws_security_group.ec2_sg] //ensures EC2 security group exists first
 }
 
-//Creates the prestashop database in a RDS
+//Creates the prestashop database in a RDS, assigns it to the VPC and places it in the RDS Subnet group
 
 resource "aws_db_instance" "prestashop_db" {
   allocated_storage    = 20
@@ -144,9 +156,7 @@ resource "aws_db_instance" "prestashop_db" {
 }
 
 
-//This is supposed to allow EC2 to connect to the RDS instance, I havben't got it to work yet and have to manually add the RDS and EC2 together. Will need to mess around with the virtual network I think.
-
-
+//creates the IAM role needed to access the S3 Bucket
 
 resource "aws_iam_role" "ec2_s3_access" {
   name = "ec2-s3-access"
@@ -165,8 +175,9 @@ resource "aws_iam_role_policy_attachment" "attach_s3" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
+//Creates the EC2 prestashop image and assigns it to the correct public subnet, it also gives it the correct key pair, IAM role, and security group. It assigns a Public IP to the instance as well.
+
 resource "aws_instance" "prestashop_ec2" {
-  ami           = var.ami_id
   ami           = var.ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
