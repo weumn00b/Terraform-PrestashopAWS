@@ -56,7 +56,7 @@ Note: You'll need to know your AMI ID for the machine you want to use, you'll al
 ---
 
 
-##Usage
+## Usage
 1. Clone the repository
 2. Open a terminal in the script directory
 3. Run the script using:
