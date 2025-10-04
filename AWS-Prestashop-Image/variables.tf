@@ -1,13 +1,4 @@
 //Liam Browning
-//Set these variables before running anything
-
-
-variable "aws_region" { default = "us-east-2" }
-variable "key_name" { default = "keypair" }
-variable "instance_type" { default = "t2.micro" }
-variable "db_username" { default = "admin" }
-variable "db_password" { default = "password" }
-variable "s3_bucket_name" { default = "prestashop-media" }
 
 resource "aws_s3_bucket" "media_bucket" {
   bucket = var.s3_bucket_name
