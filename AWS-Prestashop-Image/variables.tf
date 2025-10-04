@@ -6,6 +6,7 @@ variable "instance_type" { default = "t2.micro" }
 variable "db_username" { default = "admin" }
 variable "db_password" { default = "password" }
 variable "s3_bucket_name" { default = "prestashop-media" }
+variable "ami_id" { default = "ami-077b630ef539aa0b5"}
 
 resource "aws_s3_bucket" "media_bucket" {
   bucket = var.s3_bucket_name
@@ -94,7 +95,7 @@ resource "aws_iam_role_policy_attachment" "attach_s3" {
 }
 
 resource "aws_instance" "prestashop_ec2" {
-  ami           = "ami-example"  //Change this to the correct AMI
+  ami           = var.ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
