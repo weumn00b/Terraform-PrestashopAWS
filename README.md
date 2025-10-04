@@ -70,3 +70,13 @@ Note: You'll need to know your AMI ID for the machine you want to use, you'll al
    - S3 Bucket Name
 
 6. To set up the Database connection for prestashop, you'll need to use the RDS Endpoint address
+
+---
+
+## Diagrams
+
+<img width="3840" height="3071" alt="TerraformAWS Diagram V1" src="https://github.com/user-attachments/assets/629845b6-aca9-40d9-b525-86973fcb52fe" />
+
+---
+
+<img width="3840" height="3763" alt="Untitled diagram _ Mermaid Chart-2025-10-04-164709" src="https://github.com/user-attachments/assets/656a039d-0276-427e-999a-829ad0a44240" />
