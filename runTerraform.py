@@ -51,19 +51,6 @@ def run_terraform(command):
     process.stdout.close()
     process.wait()
 
-    print(f"\nRunning: {command}\n")
-    # Start the process
-    process = subprocess.Popen(
-        command, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-    
-    # Print output line by line as it comes
-    for line in iter(process.stdout.readline, ''):
-        print(line, end='')  # end='' prevents adding extra newlines
-
-    process.stdout.close()
-    process.wait()
-
     if process.returncode != 0:
         print(f"\nCommand failed with exit code {process.returncode}")
         print(f"\nCommand failed with exit code {process.returncode}")
