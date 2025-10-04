@@ -1,6 +1,6 @@
 # Terraform AWS PrestaShop Deployment Script
 
-## Overciew
+## Overview
 
 This Python script automates the deployment of a **PrestaShop e-comm website** on AWS using Terraform.
 
