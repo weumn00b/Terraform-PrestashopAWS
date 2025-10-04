@@ -32,11 +32,11 @@ Before running the script, install and configure the following:
    python --version
    ```
 
-3. **Terraform**
+2. **Terraform**
    Install Terraform from this [link](https://developer.hashicorp.com/terraform/install)
    Ensure that Terraform has been added to your PATH
    
-5. **AWS CLI**
+3. **AWS CLI**
    Configure AWS CLI with an IAM user that has permissions for
    - EC2
    - RDS
@@ -45,6 +45,8 @@ Before running the script, install and configure the following:
   ```
   aws configure
   ```
+
+Note: You'll need to know your AMI ID for the machine you want to use, you'll also need to make a keypair for SSH in EC2 before creating the machine.
 
 ---
 
