@@ -1,5 +1,5 @@
 aws_region      = "us-east-2"
-key_name        = "ohio-keypair"
+key_name        = "keypair"
 instance_type   = "t2.micro"
 db_username     = "admin"
 db_password     = "password"
