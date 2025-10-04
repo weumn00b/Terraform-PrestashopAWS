@@ -61,4 +61,4 @@ Before running the script, install and configure the following:
    - RDS Endpoint address
    - S3 Bucket Name
 
-6. I haven't finished the Security part of this project, so in order to connect RDS and EC2 containers, you'll have to manually add the connection through the AWS web portal.
+6. To set up the Database connection for prestashop, you'll need to use the RDS Endpoint address
