@@ -10,7 +10,9 @@ This Python script automates the deployment of a **PrestaShop e-comm website** o
 
 The script allows configuration of variables like region, instance type, and database creds
 
+
 ---
+
 
 ##Features
 
@@ -20,7 +22,9 @@ The script allows configuration of variables like region, instance type, and dat
 - Supports Windows and Linux environments
 - Enables repeatable deployments using Infrastructure-as-Code (IaC)
 
+
 ---
+
 
 ## Prerequisites
 
@@ -48,7 +52,9 @@ Before running the script, install and configure the following:
 
 Note: You'll need to know your AMI ID for the machine you want to use, you'll also need to make a keypair for SSH in EC2 before creating the machine.
 
+
 ---
+
 
 ##Usage
 1. Clone the repository
