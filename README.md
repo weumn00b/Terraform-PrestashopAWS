@@ -14,7 +14,7 @@ The script allows configuration of variables like region, instance type, and dat
 ---
 
 
-##Features
+## Features
 
 - Prompts the user for variable input, also has an option for default values
 - Updates the `terraform.tfvars` file, which holds the values 
