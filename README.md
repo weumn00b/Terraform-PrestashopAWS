@@ -1,6 +1,6 @@
 # Terraform AWS PrestaShop Deployment Script
 
-## Overciew
+## Overview
 
 This Python script automates the deployment of a **PrestaShop e-comm website** on AWS using Terraform.
 
@@ -10,9 +10,11 @@ This Python script automates the deployment of a **PrestaShop e-comm website** o
 
 The script allows configuration of variables like region, instance type, and database creds
 
+
 ---
 
-##Features
+
+## Features
 
 - Prompts the user for variable input, also has an option for default values
 - Updates the `terraform.tfvars` file, which holds the values 
@@ -20,7 +22,9 @@ The script allows configuration of variables like region, instance type, and dat
 - Supports Windows and Linux environments
 - Enables repeatable deployments using Infrastructure-as-Code (IaC)
 
+
 ---
+
 
 ## Prerequisites
 
@@ -32,11 +36,11 @@ Before running the script, install and configure the following:
    python --version
    ```
 
-3. **Terraform**
+2. **Terraform**
    Install Terraform from this [link](https://developer.hashicorp.com/terraform/install)
    Ensure that Terraform has been added to your PATH
    
-5. **AWS CLI**
+3. **AWS CLI**
    Configure AWS CLI with an IAM user that has permissions for
    - EC2
    - RDS
@@ -46,9 +50,13 @@ Before running the script, install and configure the following:
   aws configure
   ```
 
+Note: You'll need to know your AMI ID for the machine you want to use, you'll also need to make a keypair for SSH in EC2 before creating the machine.
+
+
 ---
 
-##Usage
+
+## Usage
 1. Clone the repository
 2. Open a terminal in the script directory
 3. Run the script using:

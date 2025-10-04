@@ -167,6 +167,7 @@ resource "aws_iam_role_policy_attachment" "attach_s3" {
 
 resource "aws_instance" "prestashop_ec2" {
   ami           = var.ami_id
+  ami           = var.ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = aws_subnet.public_subnet.id
