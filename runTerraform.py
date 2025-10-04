@@ -13,18 +13,20 @@ instance_type = input("Instance Type [t2.micro]: ") or "t2.micro"
 db_username = input("DB Username [admin]: ") or "admin"
 db_password = input("DB Password [password]: ") or "password"
 s3_bucket_name = input("S3 Bucket Name [prestashop-media]: ") or "prestashop-media"
-
+ami_id = input("AMI ID [ami-077b630ef539aa0b5]: ") or "ami-077b630ef539aa0b5"
 #Creating terraform.tfvars
 
 tfvars_content = f"""
-aws_region      = '{aws_region}'
-key_name        = '{key_name}'
-instance_type   = '{instance_type}'
-db_username     = '{db_username}'
-db_password     = '{db_password}'
-s3_bucket_name  = '{s3_bucket_name}'
+aws_region      = "{aws_region}"
+key_name        = "{key_name}"
+instance_type   = "{instance_type}"
+db_username     = "{db_username}"
+db_password     = "{db_password}"
+s3_bucket_name  = "{s3_bucket_name}"
+ami_id          = "{ami_id}"
 """
 
+os.chdir("AWS-Prestashop-Image")
 
 tfvars_file = "terraform.tfvars"
 with open(tfvars_file, "w") as f:
@@ -34,11 +36,21 @@ print(f"{tfvars_file} created/updated successfully.")
 
 #function to run a terraform command
 def run_terraform(command):
-    print(f"\nRunning: {command}")
-    process = subprocess.run(command, shell=True, text=True, capture_output=True)
-    print(process.stdout)
+    print(f"\nRunning: {command}\n")
+    # Start the process
+    process = subprocess.Popen(
+        command, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    
+    # Print output line by line as it comes
+    for line in iter(process.stdout.readline, ''):
+        print(line, end='')  # end='' prevents adding extra newlines
+
+    process.stdout.close()
+    process.wait()
+
     if process.returncode != 0:
-        print("Error:", process.stderr)
+        print(f"\nCommand failed with exit code {process.returncode}")
         exit(1)
 
 # Initialize Terraform
